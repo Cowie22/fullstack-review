@@ -30,6 +30,8 @@ Repo.create({  //this is how you make the document
 //     Repo()
 // })
 
+db.Repo.createIndex({url: 1}, {unique: true});
+
 
 module.exports.Repo = Repo;
 
