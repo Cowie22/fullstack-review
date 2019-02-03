@@ -1,20 +1,21 @@
 const express = require('express');
-const getReposByUsername = require('../helpers/github.js')
 let app = express();
+
+const gitHubHandler = require('../helpers/github.js')
+const repoHandler = require('../database')
 
 app.use(express.static(__dirname + '/../client/dist'));
 
 app.post('/repos', function (req, res) {
-  // TODO - your code here!
-  // This route should take the github username provided
-  // and get the repo information from the github API, then
-  // save the repo information in the database
+  gitHubHandler.getReposByUsername('Cowie22', () => {
+    res.send(201);
+  })
 });
 
 app.get('/repos', function (req, res) {
-  console.log(typeof getRepos)
-  getReposByUsername('Cowie22')
-  res.send('sup');
+  // console.log(typeof getRepos)
+  // getReposByUsername('Cowie22')
+  // res.send('sup');
   // TODO - your code here!
   // This route should send back the top 25 repos
 });

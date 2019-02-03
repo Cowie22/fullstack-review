@@ -1,7 +1,9 @@
 const request = require('request');
 const config = require('../config.js');
 
-let getReposByUsername = (username) => {
+const Repo = require('../database');
+
+let getReposByUsername = (username, callback) => {
   // TODO - Use the request module to request repos for a specific
   // user from the github API
 
@@ -16,10 +18,32 @@ let getReposByUsername = (username) => {
   };
   console.log(options.url)
 
-  request.get(options, (err, res) => {
-    if (err) return console.log(err);
-    console.log(JSON.parse(res.body));
+  request(options, (err, res, body) => {
+    console.log('error:', err);
+    // console.log('statusCode:', res && res.statusCode);
+    // console.log('body:', JSON.parse(body));
+    const gitHubData = JSON.parse(body);
+    Repo.save(username, gitHubData, callback)
   })
 }
 // getReposByUsername('Cowie22')
 module.exports = getReposByUsername;
+
+
+//dist is the folder that gets pushed to the distribution, that is why the client code is organized the way it is.
+//dirname is important because you can't guarentee the path
+  //gives you the absolute path to whatever file is show, from where dirname is defined
+  //mongo stores every collection as an array and every
+  //document within as an object
+
+
+  // basically like
+  // dataBaseMongoDb: {
+  //   repos: [
+  //     {
+  //       id: 1,
+  //       userName: 'cowie'
+  //     }
+  //   ]
+  // }
+
